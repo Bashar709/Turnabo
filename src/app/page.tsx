@@ -2,7 +2,15 @@
 
 import { useState } from "react";
 import kommunerData from "@/data/kommuner.json";
-import { Kommune, WeatherData, GeocodeResult } from "@/lib/types";
+import {
+  Kommune,
+  WeatherData,
+  GeocodeResult,
+  Aktivitet,
+  Vanskegrad,
+  AKTIVITETER,
+  VANSKEGRADER,
+} from "@/lib/types";
 import { calculateFamilyScore } from "@/lib/familyScore";
 
 import Header from "@/components/Header";
@@ -11,12 +19,13 @@ import SearchBar from "@/components/SearchBar";
 import WeatherCard from "@/components/WeatherCard";
 import FamilyScoreCard from "@/components/FamilyScoreCard";
 import MapView from "@/components/MapView";
+import TrailFilter from "@/components/TrailFilter";
 import TrailList from "@/components/TrailList";
 import PhotoGrid from "@/components/PhotoGrid";
 import Footer from "@/components/Footer";
 
 const KOMMUNER = kommunerData as Kommune[];
-const POPULAERE = ["Hareid", "Bergen", "Tromso", "Bodo", "Oslo"];
+const POPULAERE = ["Hareid", "Bergen", "Tromsø", "Bodø", "Oslo"];
 
 function findKommune(navn: string): Kommune | undefined {
   const n = navn.trim().toLowerCase();
@@ -36,6 +45,32 @@ export default function Home() {
   const [weatherLoading, setWeatherLoading] = useState(false);
   const [weatherError, setWeatherError] = useState(false);
 
+  const [aktFilter, setAktFilter] = useState<Set<Aktivitet>>(new Set());
+  const [vanskeFilter, setVanskeFilter] = useState<Set<Vanskegrad>>(new Set());
+
+  function toggleAkt(a: Aktivitet) {
+    setAktFilter((prev) => {
+      const next = new Set(prev);
+      if (next.has(a)) next.delete(a);
+      else next.add(a);
+      return next;
+    });
+  }
+
+  function toggleVanske(v: Vanskegrad) {
+    setVanskeFilter((prev) => {
+      const next = new Set(prev);
+      if (next.has(v)) next.delete(v);
+      else next.add(v);
+      return next;
+    });
+  }
+
+  function nullstillFilter() {
+    setAktFilter(new Set());
+    setVanskeFilter(new Set());
+  }
+
   async function handleSelect(navn: string) {
     const kobj = findKommune(navn) ?? null;
     setQuery(navn);
@@ -43,6 +78,7 @@ export default function Home() {
     setShowResult(true);
     setWeather(null);
     setWeatherError(false);
+    nullstillFilter();
 
     const displayName = kobj?.kommune ?? navn;
     const fylke = kobj?.fylke ?? "";
@@ -79,6 +115,19 @@ export default function Home() {
 
   const familyScore = selected ? calculateFamilyScore(selected) : 0;
 
+  const alleTurer = selected?.turer ?? [];
+  const tilgjengeligeAkt = AKTIVITETER.filter((a) =>
+    alleTurer.some((t) => t.aktivitet === a)
+  );
+  const tilgjengeligeVanske = VANSKEGRADER.filter((v) =>
+    alleTurer.some((t) => t.vanskegrad === v)
+  );
+  const synligeTurer = alleTurer.filter(
+    (t) =>
+      (aktFilter.size === 0 || aktFilter.has(t.aktivitet)) &&
+      (vanskeFilter.size === 0 || vanskeFilter.has(t.vanskegrad))
+  );
+
   return (
     <>
       <div className="relative">
@@ -91,11 +140,11 @@ export default function Home() {
               Turfinner for alle Norges 358 kommuner
             </span>
             <h1 className="mb-5 font-display text-[clamp(2.3rem,5.2vw,3.6rem)] font-semibold leading-[1.06] text-pine-deep">
-              Hvor vil du <em className="text-fjord not-italic italic">ga</em> i dag?
+              Hvor vil du <em className="text-fjord not-italic italic">gå</em> i dag?
             </h1>
             <p className="mb-8 max-w-[52ch] text-[1.05rem] leading-relaxed text-[#3c4a44]">
-              Skriv inn en kommune, sa viser vi turer i naerheten &mdash; med
-              vaer, hvor familievennlig det er, kart og bilder, samlet pa ett
+              Skriv inn en kommune, så viser vi turer i nærheten &mdash; med
+              vær, hvor familievennlig det er, kart og bilder, samlet på ett
               sted.
             </p>
 
@@ -154,20 +203,42 @@ export default function Home() {
           label={selected?.kommune ?? query}
         />
         <p className="-mt-7 mb-9 font-mono text-xs text-fog">
-          Ekte kart (OpenStreetMap) &mdash; sentrerer automatisk pa kommunen du soker pa.
+          Ekte kart (OpenStreetMap) &mdash; sentrerer automatisk på kommunen du søker på.
         </p>
 
         <h3 className="mb-4 font-display text-[1.3rem] font-semibold text-pine-deep">
-          Turer i naerheten
+          Turer i nærheten
         </h3>
         <p className="-mt-2 mb-4 text-sm text-fog">
           Eksempeldata generert for demoen &mdash; i den ferdige appen hentes
           ekte turer fra Nasjonal Turbase / UT.no.
         </p>
-        <TrailList trails={selected?.turer ?? []} />
+
+        {alleTurer.length > 0 && (
+          <TrailFilter
+            aktiviteter={tilgjengeligeAkt}
+            vanskegrader={tilgjengeligeVanske}
+            valgtAktivitet={aktFilter}
+            valgtVanske={vanskeFilter}
+            onToggleAktivitet={toggleAkt}
+            onToggleVanske={toggleVanske}
+            onNullstill={nullstillFilter}
+            antallVist={synligeTurer.length}
+            antallTotalt={alleTurer.length}
+          />
+        )}
+
+        <TrailList
+          trails={synligeTurer}
+          emptyText={
+            alleTurer.length > 0
+              ? "Ingen turer matcher filteret. Prøv å fjerne noen valg."
+              : "Fant ingen turer for denne kommunen ennå."
+          }
+        />
 
         <h3 className="mb-4 font-display text-[1.3rem] font-semibold text-pine-deep">
-          Bilder fra omradet
+          Bilder fra området
         </h3>
         <PhotoGrid />
       </section>

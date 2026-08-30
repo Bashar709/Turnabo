@@ -3,12 +3,12 @@ import { NextRequest, NextResponse } from "next/server";
 /**
  * Proxy mot MET Norway sitt Locationforecast-API.
  *
- * Vi henter vaerdata her (server-side) i stedet for direkte fra
+ * Vi henter værdata her (server-side) i stedet for direkte fra
  * nettleseren, fordi MET Norway krever en identifiserbar
- * User-Agent-header per bruksvilkarene deres:
+ * User-Agent-header per bruksvilkårene deres:
  * https://api.met.no/doc/TermsOfService
  *
- * Bytt ut kontakt-e-posten under med din egen for i produksjon.
+ * Bytt ut kontakt-e-posten under med din egen før produksjon.
  */
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
@@ -17,7 +17,7 @@ export async function GET(req: NextRequest) {
 
   if (!lat || !lon) {
     return NextResponse.json(
-      { error: "Mangler lat/lon i foresporselen" },
+      { error: "Mangler lat/lon i forespørselen" },
       { status: 400 }
     );
   }
@@ -29,14 +29,14 @@ export async function GET(req: NextRequest) {
         headers: {
           "User-Agent": "Turnabo/0.1 github.com/Bashar709/turnabo (kontakt@example.com)",
         },
-        // Cacher i 10 minutter - MET ber om at man ikke sparner unodvendig
+        // Cacher i 10 minutter – MET ber om at man ikke gjør unødvendige kall.
         next: { revalidate: 600 },
       }
     );
 
     if (!res.ok) {
       return NextResponse.json(
-        { error: "Klarte ikke hente vaerdata fra MET Norway" },
+        { error: "Klarte ikke hente værdata fra MET Norway" },
         { status: 502 }
       );
     }
@@ -46,7 +46,7 @@ export async function GET(req: NextRequest) {
 
     if (!now) {
       return NextResponse.json(
-        { error: "Fant ingen vaerdata for dette punktet" },
+        { error: "Fant ingen værdata for dette punktet" },
         { status: 404 }
       );
     }
@@ -67,7 +67,7 @@ export async function GET(req: NextRequest) {
     });
   } catch (err) {
     return NextResponse.json(
-      { error: "Uventet feil ved henting av vaerdata" },
+      { error: "Uventet feil ved henting av værdata" },
       { status: 500 }
     );
   }

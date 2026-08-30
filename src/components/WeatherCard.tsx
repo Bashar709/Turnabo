@@ -10,16 +10,16 @@ export default function WeatherCard({ weather, loading, error }: WeatherCardProp
   return (
     <div className="rounded-card border border-line bg-card p-[22px]">
       <span className="mb-3.5 block font-mono text-[0.7rem] uppercase tracking-wider text-fog">
-        Vaer na
+        Vær nå
       </span>
 
       {loading && (
-        <p className="text-sm text-fog">Henter vaerdata fra MET Norway ...</p>
+        <p className="text-sm text-fog">Henter værdata fra MET Norway …</p>
       )}
 
       {!loading && error && (
         <p className="text-sm text-fog">
-          Fikk ikke hentet vaerdata akkurat na. Provo igjen om litt.
+          Fikk ikke hentet værdata akkurat nå. Prøv igjen om litt.
         </p>
       )}
 
@@ -31,7 +31,7 @@ export default function WeatherCard({ weather, loading, error }: WeatherCardProp
           <div className="text-[0.92rem] leading-relaxed text-[#3c4a44]">
             Vindstyrke <b className="text-ink">{weather.windSpeed} m/s</b>
             <br />
-            Nedbor neste time{" "}
+            Nedbør neste time{" "}
             <b className="text-ink">{weather.precipitation} mm</b>
             <br />
             Kilde: MET Norway (Locationforecast)

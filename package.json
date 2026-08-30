@@ -2,7 +2,7 @@
   "name": "turnabo",
   "version": "0.1.0",
   "private": true,
-  "description": "Turnabo - finn turer i din kommune, med vaer, familievennlighet, kart og bilder.",
+  "description": "Turnabo – finn turer i din kommune, med vær, familievennlighet, kart og bilder.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

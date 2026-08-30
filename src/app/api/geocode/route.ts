@@ -3,9 +3,9 @@ import { NextRequest, NextResponse } from "next/server";
 /**
  * Proxy mot OpenStreetMap sitt Nominatim-API for geokoding.
  *
- * Kjores server-side med en identifiserbar User-Agent i traad med
- * Nominatims bruksvilkar: https://operations.osmfoundation.org/policies/nominatim/
- * Ved storre trafikk bor dette byttes ut med en betalt geokodingstjeneste
+ * Kjøres server-side med en identifiserbar User-Agent i tråd med
+ * Nominatims bruksvilkår: https://operations.osmfoundation.org/policies/nominatim/
+ * Ved større trafikk bør dette byttes ut med en betalt geokodingstjeneste
  * eller egen selvhostet Nominatim-instans.
  */
 export async function GET(req: NextRequest) {
@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
   const q = searchParams.get("q");
 
   if (!q) {
-    return NextResponse.json({ error: "Mangler sokeord" }, { status: 400 });
+    return NextResponse.json({ error: "Mangler søkeord" }, { status: 400 });
   }
 
   try {

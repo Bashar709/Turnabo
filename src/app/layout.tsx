@@ -21,9 +21,9 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Turnabo - finn din neste tur",
+  title: "Turnabo – finn din neste tur",
   description:
-    "Turnabo viser turer i din kommune, med vaer, familievennlighet, kart og bilder samlet pa ett sted.",
+    "Turnabo viser turer i din kommune, med vær, familievennlighet, kart og bilder samlet på ett sted.",
 };
 
 export default function RootLayout({

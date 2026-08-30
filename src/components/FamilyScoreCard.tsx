@@ -8,7 +8,7 @@ export default function FamilyScoreCard({ score }: FamilyScoreCardProps) {
   return (
     <div className="rounded-card border border-line bg-card p-[22px]">
       <span className="mb-3.5 block font-mono text-[0.7rem] uppercase tracking-wider text-fog">
-        Familievennlig-skaar
+        Familievennlig-skår
       </span>
 
       <div className="flex flex-wrap gap-2.5">
@@ -19,7 +19,7 @@ export default function FamilyScoreCard({ score }: FamilyScoreCardProps) {
           Kort avstand
         </span>
         <span className="flex items-center gap-2 rounded-full bg-pine/[0.07] px-3.5 py-2 text-sm font-semibold text-pine-deep">
-          Toalett i naerheten
+          Toalett i nærheten
         </span>
       </div>
 
@@ -33,7 +33,7 @@ export default function FamilyScoreCard({ score }: FamilyScoreCardProps) {
         <span className="font-mono text-sm text-pine-deep">{score} / 10</span>
       </div>
       <p className="mt-3 text-xs text-fog">
-        Plassholder-skaar &mdash; regnes ut fra eksempeldata, se lib/familyScore.ts
+        Plassholder-skår &mdash; regnes ut fra eksempeldata, se lib/familyScore.ts
       </p>
     </div>
   );

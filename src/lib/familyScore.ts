@@ -1,13 +1,13 @@
 import { Kommune } from "./types";
 
 /**
- * Regner ut en "familievennlig-skaar" fra 1-10 for en kommune.
+ * Regner ut en "familievennlig-skår" fra 1-10 for en kommune.
  *
- * TODO: Dette er en midlertidig plassholder-formel basert kun paa
+ * TODO: Dette er en midlertidig plassholder-formel basert kun på
  * eksempeldataene vi genererer lokalt (antall lette turer og
- * gjennomsnittlig distanse). Naar Nasjonal Turbase er koblet til,
- * bor formelen i stedet bruke ekte data om f.eks. tilrettelegging
- * for barnevogn, avstand til parkering, toalett i naerheten osv.
+ * gjennomsnittlig distanse). Når Nasjonal Turbase er koblet til,
+ * bør formelen i stedet bruke ekte data om f.eks. tilrettelegging
+ * for barnevogn, avstand til parkering, toalett i nærheten osv.
  */
 export function calculateFamilyScore(kommune: Kommune): number {
   if (!kommune.turer.length) return 5;

@@ -1,7 +1,27 @@
 export type Vanskegrad = "Lett" | "Middels" | "Krevende";
 
+export type Aktivitet =
+  | "Fottur"
+  | "Fjelltur"
+  | "Løpetur"
+  | "Sykkeltur"
+  | "Skitur";
+
+/** Alle aktivitetstyper i visningsrekkefølge, brukt av filteret. */
+export const AKTIVITETER: Aktivitet[] = [
+  "Fottur",
+  "Fjelltur",
+  "Løpetur",
+  "Sykkeltur",
+  "Skitur",
+];
+
+/** Alle vanskegrader i stigende rekkefølge, brukt av filteret. */
+export const VANSKEGRADER: Vanskegrad[] = ["Lett", "Middels", "Krevende"];
+
 export interface Trail {
   navn: string;
+  aktivitet: Aktivitet;
   distanse: number; // km
   stigning: number; // meter
   vanskegrad: Vanskegrad;
