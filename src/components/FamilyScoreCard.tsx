@@ -1,0 +1,40 @@
+interface FamilyScoreCardProps {
+  score: number;
+}
+
+export default function FamilyScoreCard({ score }: FamilyScoreCardProps) {
+  const pct = Math.round((score / 10) * 100);
+
+  return (
+    <div className="rounded-card border border-line bg-card p-[22px]">
+      <span className="mb-3.5 block font-mono text-[0.7rem] uppercase tracking-wider text-fog">
+        Familievennlig-skaar
+      </span>
+
+      <div className="flex flex-wrap gap-2.5">
+        <span className="flex items-center gap-2 rounded-full bg-pine/[0.07] px-3.5 py-2 text-sm font-semibold text-pine-deep">
+          Barnevogn OK
+        </span>
+        <span className="flex items-center gap-2 rounded-full bg-amber/[0.16] px-3.5 py-2 text-sm font-semibold text-amber-deep">
+          Kort avstand
+        </span>
+        <span className="flex items-center gap-2 rounded-full bg-pine/[0.07] px-3.5 py-2 text-sm font-semibold text-pine-deep">
+          Toalett i naerheten
+        </span>
+      </div>
+
+      <div className="mt-4 flex items-center gap-3">
+        <div className="h-2 flex-1 overflow-hidden rounded-full bg-line">
+          <div
+            className="h-full rounded-full bg-gradient-to-r from-amber to-pine"
+            style={{ width: `${pct}%` }}
+          />
+        </div>
+        <span className="font-mono text-sm text-pine-deep">{score} / 10</span>
+      </div>
+      <p className="mt-3 text-xs text-fog">
+        Plassholder-skaar &mdash; regnes ut fra eksempeldata, se lib/familyScore.ts
+      </p>
+    </div>
+  );
+}
