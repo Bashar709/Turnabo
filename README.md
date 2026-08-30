@@ -10,10 +10,12 @@ Laga av [bashar.no](https://bashar.no).
 | Del | Status |
 |---|---|
 | Søk med autocomplete på alle 358 kommuner | Ferdig |
-| Kart (OpenStreetMap / Leaflet) | Ferdig, ekte geokoding |
+| Kart (OpenStreetMap / CARTO / Leaflet) | Ferdig, ekte geokoding |
 | Vær | Ferdig, ekte data fra MET Norway |
-| Turer per kommune | 4–6 stk, med aktivitetstype og vanskegrad – men generert plassholder-data, ikke ekte |
+| Turnavn | Ekte fjell- og toppnavn hentet fra Kartverket (stedsnavn-API), 353/358 kommuner |
+| Turdetaljer (lengde/stigning/tid) | Anslag, ikke ekte |
 | Filter på aktivitet og vanskegrad | Ferdig (klientside) |
+| Egen «Om oss»-side (`/om`) | Ferdig |
 | Familievennlig-skår | Plassholder-formel, se `src/lib/familyScore.ts` |
 | Bilder | Plassholder, ikke koblet til Google Places ennå |
 
@@ -32,6 +34,7 @@ npm run dev
 src/
   app/
     page.tsx            <- hovedsiden, samler alt + filtrering av turlista
+    om/page.tsx         <- «Om oss»-side: hva produktet er
     layout.tsx          <- fonter og global HTML-struktur
     globals.css
     api/
@@ -62,12 +65,14 @@ scripts brukt for å lage data ligger utenfor repoet (engangs-generering).
 `src/data/kommuner.json` er generert lokalt og deterministisk (seed fra
 kommunenavn), så fila er lik hver gang. Hver tur har:
 
-- `navn`, `aktivitet` (Fottur / Fjelltur / Løpetur / Sykkeltur / Skitur),
+- `navn` – bygget på **ekte fjell-/toppnavn** hentet fra Kartverket sitt
+  stedsnavn-API (`ws.geonorge.no/stedsnavn/v1`).
+- `aktivitet` (Fottur / Fjelltur / Løpetur / Sykkeltur / Skitur),
   `distanse` (km), `stigning` (m), `vanskegrad` (Lett / Middels / Krevende)
-  og `tid` (minutter, grovt anslag).
+  og `tid` (minutter) – disse er **anslag**, ikke ekte.
 
-Dette er **ikke** ekte turdata – det er fyll for å vise fram grensesnittet og
-filtreringen inntil ekte turer er koblet til.
+Skriptene som hentet fjellnavnene og bygde JSON-fila kjøres som en
+engangsjobb og er ikke en del av appen.
 
 ## Veien videre (prioritert)
 

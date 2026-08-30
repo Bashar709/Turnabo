@@ -1,7 +1,10 @@
+import Link from "next/link";
+
 const DATAKILDER = [
   { navn: "MET Norway – værvarsel", status: "live" },
-  { navn: "OpenStreetMap / Leaflet – kart", status: "live" },
-  { navn: "Nasjonal Turbase / UT.no – turer og stier", status: "planlagt" },
+  { navn: "Kartverket – stedsnavn / fjelltopper", status: "live" },
+  { navn: "OpenStreetMap / CARTO – kart", status: "live" },
+  { navn: "Nasjonal Turbase / UT.no – turbeskrivelser", status: "planlagt" },
   { navn: "Google Places – bilder og fasiliteter", status: "planlagt" },
 ] as const;
 
@@ -20,38 +23,41 @@ function BasharLenke() {
 
 export default function Footer() {
   return (
-    <footer
-      id="om"
-      className="relative z-10 border-t border-line bg-bg-alt px-[5vw] pb-9 pt-14"
-    >
+    <footer className="relative z-10 border-t border-line bg-bg-alt px-5 pb-9 pt-12 md:px-[5vw] md:pt-14">
       <div className="grid grid-cols-[1.4fr_1fr_1fr] gap-10 max-[820px]:grid-cols-1 max-[820px]:gap-8">
         <div>
           <div className="flex items-center gap-2 font-display text-xl font-semibold text-pine-deep">
             <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6">
               <path
                 d="M3 18L9 7L13 14L16 9L21 18H3Z"
-                stroke="#2f4a3c"
+                stroke="currentColor"
                 strokeWidth="1.6"
                 strokeLinejoin="round"
               />
             </svg>
             Turnabo
           </div>
-          <p className="mt-3 max-w-[44ch] text-[0.9rem] leading-relaxed text-[#4a5850]">
-            Turnabo er et læringsprosjekt som samler turer, vær,
+          <p className="mt-3 max-w-[44ch] text-[0.9rem] leading-relaxed text-muted">
+            Et lærings- og porteføljeprosjekt som samler turer, vær,
             familievennlighet, kart og bilder for hver av Norges 358 kommuner
-            på ett sted. Bygget for å vise fram frontend- og API-arbeid.
+            på ett sted.
           </p>
           <p className="mt-4 font-mono text-xs text-fog">
             Laga av <BasharLenke />
           </p>
+          <Link
+            href="/om"
+            className="mt-2 inline-block font-mono text-xs text-pine-deep underline underline-offset-2 hover:text-fjord"
+          >
+            Mer om produktet →
+          </Link>
         </div>
 
         <div id="datakilder">
           <h4 className="mb-3 font-display text-base font-semibold text-pine-deep">
             Datakilder
           </h4>
-          <ul className="flex flex-col gap-2 text-[0.86rem] leading-relaxed text-[#4a5850]">
+          <ul className="flex flex-col gap-2 text-[0.86rem] leading-relaxed text-muted">
             {DATAKILDER.map((d) => (
               <li key={d.navn} className="flex items-start gap-2">
                 <span
@@ -63,8 +69,8 @@ export default function Footer() {
                 <span>
                   {d.navn}
                   <span className="font-mono text-[0.7rem] text-fog">
-                    {" "}
-                    · {d.status === "live" ? "koblet til" : "planlagt"}
+                    {" · "}
+                    {d.status === "live" ? "koblet til" : "planlagt"}
                   </span>
                 </span>
               </li>
@@ -76,9 +82,10 @@ export default function Footer() {
           <h4 className="mb-3 font-display text-base font-semibold text-pine-deep">
             Status
           </h4>
-          <p className="text-[0.86rem] leading-relaxed text-[#4a5850]">
-            Vær og kart bruker ekte, live data. Turdata, familievennlig-skår og
-            bilder er foreløpig plassholdere &mdash; se README for veien videre.
+          <p className="text-[0.86rem] leading-relaxed text-muted">
+            Vær og kart bruker ekte, live data, og turnavnene er ekte
+            fjelltopper fra Kartverket. Turdetaljer, familievennlig-skår og
+            bilder er foreløpig plassholdere.
           </p>
           <a
             href="https://github.com/Bashar709/Turnabo"

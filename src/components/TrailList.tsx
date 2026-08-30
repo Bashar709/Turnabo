@@ -16,16 +16,16 @@ const PROFILE_PATHS: Record<Vanskegrad, string> = {
 
 const DIFF_STYLES: Record<Vanskegrad, string> = {
   Lett: "bg-pine/10 text-pine-deep",
-  Middels: "bg-amber/[0.18] text-amber-deep",
+  Middels: "bg-amber/20 text-amber-deep",
   Krevende: "bg-fjord/10 text-fjord",
 };
 
-const AKT_STYLES: Record<Aktivitet, string> = {
-  Fottur: "bg-pine/10 text-pine-deep",
-  Fjelltur: "bg-fjord/10 text-fjord",
-  Løpetur: "bg-amber/[0.18] text-amber-deep",
-  Sykkeltur: "bg-pine/[0.06] text-pine-deep",
-  Skitur: "bg-fjord/[0.06] text-fjord",
+const AKT_IKON: Record<Aktivitet, string> = {
+  Fottur: "🥾",
+  Fjelltur: "⛰️",
+  Løpetur: "🏃",
+  Sykkeltur: "🚴",
+  Skitur: "⛷️",
 };
 
 function formatTime(minutes: number) {
@@ -38,7 +38,7 @@ function formatTime(minutes: number) {
 export default function TrailList({ trails, emptyText }: TrailListProps) {
   if (!trails.length) {
     return (
-      <p className="mb-9 text-sm text-fog">
+      <p className="mb-9 rounded-card border border-dashed border-line bg-card px-5 py-6 text-center text-sm text-muted">
         {emptyText ?? "Fant ingen turer for denne kommunen ennå."}
       </p>
     );
@@ -49,9 +49,13 @@ export default function TrailList({ trails, emptyText }: TrailListProps) {
       {trails.map((t) => (
         <div
           key={t.navn}
-          className="grid grid-cols-[auto_1fr_auto_auto] items-center gap-4.5 rounded-card border border-line bg-card px-5 py-4 max-[640px]:grid-cols-[auto_1fr]"
+          className="flex items-center gap-4 rounded-card border border-line bg-card px-4 py-3.5 shadow-card sm:px-5"
         >
-          <svg viewBox="0 0 100 40" className="h-8 w-[70px] text-pine">
+          <svg
+            viewBox="0 0 100 40"
+            className="hidden h-8 w-[64px] shrink-0 text-pine sm:block"
+            aria-hidden
+          >
             <path
               d={PROFILE_PATHS[t.vanskegrad] ?? PROFILE_PATHS.Middels}
               fill="none"
@@ -60,31 +64,28 @@ export default function TrailList({ trails, emptyText }: TrailListProps) {
               strokeLinecap="round"
             />
           </svg>
-          <div>
-            <div className="flex flex-wrap items-center gap-2">
+
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+              <span className="font-mono text-[0.7rem] uppercase tracking-wide text-fog">
+                <span aria-hidden>{AKT_IKON[t.aktivitet]}</span> {t.aktivitet}
+              </span>
               <span
-                className={`rounded-full px-2 py-0.5 font-mono text-[0.65rem] uppercase tracking-wide ${
-                  AKT_STYLES[t.aktivitet] ?? AKT_STYLES.Fottur
+                className={`rounded-full px-2 py-0.5 font-mono text-[0.62rem] uppercase tracking-wide ${
+                  DIFF_STYLES[t.vanskegrad] ?? DIFF_STYLES.Middels
                 }`}
               >
-                {t.aktivitet}
+                {t.vanskegrad}
               </span>
-              <span className="font-bold text-[0.98rem]">{t.navn}</span>
+            </div>
+            <div className="mt-0.5 truncate font-bold text-[0.98rem] text-ink">
+              {t.navn}
             </div>
             <div className="mt-0.5 font-mono text-xs text-fog">
-              {t.distanse} km &middot; {t.stigning} m stigning
+              {t.distanse} km &middot; {t.stigning} m stigning &middot; ~
+              {formatTime(t.tid)}
             </div>
           </div>
-          <span
-            className={`whitespace-nowrap rounded-full px-2.5 py-1 font-mono text-xs uppercase tracking-wide ${
-              DIFF_STYLES[t.vanskegrad] ?? DIFF_STYLES.Middels
-            }`}
-          >
-            {t.vanskegrad}
-          </span>
-          <span className="whitespace-nowrap font-mono text-sm text-fog">
-            ~{formatTime(t.tid)}
-          </span>
         </div>
       ))}
     </div>

@@ -3,12 +3,40 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 90px; /* så header ikke dekker anker-mål */
+    -webkit-text-size-adjust: 100%;
+  }
+
   body {
-    @apply bg-bg text-ink font-body;
+    @apply bg-bg text-ink font-body antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Tydelig, tilgjengelig fokusmarkering på alt som kan tabbes til */
+  :focus-visible {
+    outline: 2px solid theme("colors.fjord");
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  ::selection {
+    background: theme("colors.amber.DEFAULT");
+    color: theme("colors.pine.deep");
   }
 }
 
-/* Fjern rullefelt-scrollbar-hopping og gi jevn scroll til resultat-seksjonen */
-html {
-  scroll-behavior: smooth;
+/* Leaflet: rundede hjørner og dempet attribusjon som matcher resten */
+.leaflet-container {
+  font: inherit;
+  background: theme("colors.bg-alt");
+}
+.leaflet-control-attribution {
+  background: rgba(255, 254, 249, 0.85) !important;
+  font-size: 10px !important;
+  color: theme("colors.fog") !important;
+}
+.leaflet-bar a {
+  color: theme("colors.pine.deep") !important;
 }

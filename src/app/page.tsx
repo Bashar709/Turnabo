@@ -134,15 +134,15 @@ export default function Home() {
         <ContourBackground />
         <Header />
 
-        <section className="relative px-[5vw] pb-[90px] pt-16">
+        <section className="relative px-5 pb-16 pt-10 md:px-[5vw] md:pb-[90px] md:pt-16">
           <div className="relative z-10 max-w-[720px]">
             <span className="mb-4 block font-mono text-xs uppercase tracking-[0.12em] text-amber-deep">
               Turfinner for alle Norges 358 kommuner
             </span>
-            <h1 className="mb-5 font-display text-[clamp(2.3rem,5.2vw,3.6rem)] font-semibold leading-[1.06] text-pine-deep">
-              Hvor vil du <em className="text-fjord not-italic italic">gå</em> i dag?
+            <h1 className="mb-5 font-display text-[clamp(2.1rem,7vw,3.6rem)] font-semibold leading-[1.06] text-pine-deep">
+              Hvor vil du <em className="italic text-fjord">gå</em> i dag?
             </h1>
-            <p className="mb-8 max-w-[52ch] text-[1.05rem] leading-relaxed text-[#3c4a44]">
+            <p className="mb-8 max-w-[52ch] text-[1.02rem] leading-relaxed text-muted md:text-[1.05rem]">
               Skriv inn en kommune, så viser vi turer i nærheten &mdash; med
               vær, hvor familievennlig det er, kart og bilder, samlet på ett
               sted.
@@ -159,7 +159,7 @@ export default function Home() {
                 <button
                   key={navn}
                   onClick={() => handleSelect(navn)}
-                  className="rounded-full border border-line px-3.5 py-1.5 font-mono text-[0.78rem] text-pine-deep transition-colors hover:border-pine-deep hover:bg-pine/5"
+                  className="rounded-full border border-line px-3.5 py-1.5 font-mono text-[0.78rem] text-ink transition-colors hover:border-line-strong hover:bg-pine/5"
                 >
                   {navn}
                 </button>
@@ -170,14 +170,14 @@ export default function Home() {
       </div>
 
       <section
-        className={`relative z-10 px-[5vw] pb-16 transition-all duration-500 ${
+        className={`relative z-10 px-5 pb-16 transition-all duration-500 md:px-[5vw] ${
           showResult
-            ? "pointer-events-auto opacity-100 translate-y-0"
-            : "pointer-events-none opacity-0 translate-y-4"
+            ? "pointer-events-auto translate-y-0 opacity-100"
+            : "pointer-events-none translate-y-4 opacity-0"
         }`}
       >
-        <div className="mb-7 flex flex-wrap items-baseline justify-between gap-3 border-b border-line pb-4.5">
-          <h2 className="font-display text-[2rem] font-semibold text-pine-deep">
+        <div className="mb-7 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 border-b border-line pb-4">
+          <h2 className="font-display text-[1.7rem] font-semibold text-pine-deep sm:text-[2rem]">
             {selected?.kommune ?? query}
           </h2>
           <span className="font-mono text-sm text-fog">
@@ -185,7 +185,7 @@ export default function Home() {
           </span>
         </div>
 
-        <div className="mb-6 grid grid-cols-2 gap-5 max-[760px]:grid-cols-1">
+        <div className="mb-8 grid grid-cols-2 gap-4 max-[760px]:grid-cols-1 sm:gap-5">
           <WeatherCard
             weather={weather}
             loading={weatherLoading}
@@ -194,7 +194,7 @@ export default function Home() {
           <FamilyScoreCard score={familyScore} />
         </div>
 
-        <h3 className="mb-4 font-display text-[1.3rem] font-semibold text-pine-deep">
+        <h3 className="mb-3 font-display text-[1.3rem] font-semibold text-pine-deep">
           Kart
         </h3>
         <MapView
@@ -202,16 +202,18 @@ export default function Home() {
           lon={geo?.lon ?? null}
           label={selected?.kommune ?? query}
         />
-        <p className="-mt-7 mb-9 font-mono text-xs text-fog">
-          Ekte kart (OpenStreetMap) &mdash; sentrerer automatisk på kommunen du søker på.
+        <p className="mb-9 mt-2 font-mono text-xs text-fog">
+          Ekte kart (OpenStreetMap / CARTO) &mdash; sentrerer automatisk på
+          kommunen du søker på.
         </p>
 
-        <h3 className="mb-4 font-display text-[1.3rem] font-semibold text-pine-deep">
+        <h3 className="mb-2 font-display text-[1.3rem] font-semibold text-pine-deep">
           Turer i nærheten
         </h3>
-        <p className="-mt-2 mb-4 text-sm text-fog">
-          Eksempeldata generert for demoen &mdash; i den ferdige appen hentes
-          ekte turer fra Nasjonal Turbase / UT.no.
+        <p className="mb-4 text-sm text-muted">
+          Ekte fjell- og toppnavn fra Kartverket. Lengde, stigning og tid er
+          foreløpig anslag &mdash; ekte turbeskrivelser hentes fra Nasjonal
+          Turbase / UT.no senere.
         </p>
 
         {alleTurer.length > 0 && (
@@ -237,7 +239,7 @@ export default function Home() {
           }
         />
 
-        <h3 className="mb-4 font-display text-[1.3rem] font-semibold text-pine-deep">
+        <h3 className="mb-3 mt-2 font-display text-[1.3rem] font-semibold text-pine-deep">
           Bilder fra området
         </h3>
         <PhotoGrid />

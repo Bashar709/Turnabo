@@ -72,7 +72,7 @@ export default function SearchBar({
 
   return (
     <div className="relative max-w-[520px]" ref={wrapRef}>
-      <div className="flex items-center gap-2.5 rounded-full border-[1.5px] border-line bg-card py-2 pl-5 pr-2 shadow-[0_10px_30px_-14px_rgba(27,42,36,0.35)]">
+      <div className="flex items-center gap-2 rounded-full border-[1.5px] border-line bg-card py-2 pl-4 pr-2 shadow-card sm:gap-2.5 sm:pl-5">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="shrink-0 text-fog">
           <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2" />
           <path
@@ -85,7 +85,7 @@ export default function SearchBar({
         <input
           type="text"
           autoComplete="off"
-          placeholder="Skriv en kommune, f.eks. Hareid ..."
+          placeholder="Skriv en kommune, f.eks. Hareid …"
           value={query}
           onChange={(e) => {
             setQuery(e.target.value);
@@ -93,26 +93,26 @@ export default function SearchBar({
           }}
           onFocus={() => updateMatches(query)}
           onKeyDown={handleKeyDown}
-          className="flex-1 bg-transparent py-2.5 font-body text-base text-ink placeholder:text-fog/70 outline-none"
+          className="min-w-0 flex-1 bg-transparent py-2.5 font-body text-base text-ink placeholder:text-fog outline-none"
         />
         <button
           onClick={() => {
             setOpen(false);
             onSelect(query);
           }}
-          className="rounded-full bg-pine-deep px-5 py-3 font-body text-sm font-bold text-[#f5f2e8] transition-colors hover:bg-fjord active:scale-95"
+          className="shrink-0 rounded-full bg-pine-deep px-4 py-3 font-body text-sm font-bold text-card transition-transform hover:bg-fjord active:scale-95 sm:px-5"
         >
           Finn turer
         </button>
       </div>
 
       {open && (
-        <div className="absolute left-0 right-0 top-[calc(100%+8px)] z-20 overflow-hidden rounded-2xl border border-line bg-card shadow-[0_16px_40px_-16px_rgba(27,42,36,0.4)]">
+        <div className="absolute left-0 right-0 top-[calc(100%+8px)] z-30 overflow-hidden rounded-2xl border border-line bg-card shadow-pop">
           {matches.map((k, i) => (
             <div
               key={k.kommune}
               onClick={() => select(k.kommune)}
-              className={`flex cursor-pointer items-center justify-between px-[18px] py-2.5 text-sm ${
+              className={`flex cursor-pointer items-center justify-between px-[18px] py-2.5 text-sm text-ink ${
                 i === activeIndex ? "bg-pine/10" : "hover:bg-pine/5"
               }`}
             >

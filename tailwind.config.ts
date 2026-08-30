@@ -5,29 +5,38 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        bg: "#efeade",
-        "bg-alt": "#e7e1d1",
-        card: "#f8f5ec",
-        ink: "#1b2a24",
+        // Flater
+        bg: "#f4f1e8",
+        "bg-alt": "#e9e3d4",
+        card: "#fffef9",
+        // Tekst
+        ink: "#16231e", // hovedtekst, ~14:1 mot bg
+        muted: "#3b453f", // sekundær brødtekst, ~9:1 mot bg
+        fog: "#55635c", // hjelpetekst / mono-labels, ~4.8:1 mot bg
+        // Aksenter
         pine: {
-          DEFAULT: "#2f4a3c",
-          deep: "#1d3129",
+          DEFAULT: "#2c4739",
+          deep: "#1b2f27",
         },
-        fjord: "#1b3a4b",
+        fjord: "#194b63", // gikk mørkere for bedre kontrast
         amber: {
-          DEFAULT: "#e8a33d",
-          deep: "#c67f22",
+          DEFAULT: "#e29a2e",
+          deep: "#8f5c10", // mørk nok til brødtekst-bruk
         },
-        fog: "#7c8c86",
-        line: "rgba(27,42,36,0.12)",
+        line: "rgba(22,35,30,0.16)",
+        "line-strong": "rgba(22,35,30,0.28)",
       },
       fontFamily: {
-        display: ["var(--font-fraunces)", "serif"],
-        body: ["var(--font-manrope)", "sans-serif"],
-        mono: ["var(--font-plex-mono)", "monospace"],
+        display: ["var(--font-fraunces)", "Georgia", "serif"],
+        body: ["var(--font-manrope)", "system-ui", "sans-serif"],
+        mono: ["var(--font-plex-mono)", "ui-monospace", "monospace"],
       },
       borderRadius: {
-        card: "14px",
+        card: "16px",
+      },
+      boxShadow: {
+        card: "0 1px 2px rgba(22,35,30,0.04), 0 8px 24px -16px rgba(22,35,30,0.25)",
+        pop: "0 16px 44px -18px rgba(22,35,30,0.4)",
       },
     },
   },

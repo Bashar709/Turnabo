@@ -14,13 +14,37 @@ interface TrailFilterProps {
   antallTotalt: number;
 }
 
-const chipBase =
-  "rounded-full border px-3 py-1.5 font-mono text-[0.75rem] transition-colors";
+const AKT_IKON: Record<Aktivitet, string> = {
+  Fottur: "🥾",
+  Fjelltur: "⛰️",
+  Løpetur: "🏃",
+  Sykkeltur: "🚴",
+  Skitur: "⛷️",
+};
 
-function chipClass(aktiv: boolean) {
-  return aktiv
-    ? `${chipBase} border-pine-deep bg-pine-deep text-[#f5f2e8]`
-    : `${chipBase} border-line text-pine-deep hover:border-pine-deep hover:bg-pine/5`;
+function Chip({
+  aktiv,
+  onClick,
+  children,
+}: {
+  aktiv: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      aria-pressed={aktiv}
+      onClick={onClick}
+      className={`inline-flex min-h-[38px] items-center gap-1.5 rounded-full border px-3.5 text-[0.82rem] transition-colors ${
+        aktiv
+          ? "border-pine-deep bg-pine-deep text-card"
+          : "border-line bg-card text-ink hover:border-line-strong hover:bg-pine/5"
+      }`}
+    >
+      {children}
+    </button>
+  );
 }
 
 export default function TrailFilter({
@@ -37,52 +61,64 @@ export default function TrailFilter({
   const harFilter = valgtAktivitet.size > 0 || valgtVanske.size > 0;
 
   return (
-    <div className="mb-5 rounded-card border border-line bg-card px-5 py-4">
-      <div className="mb-3 flex flex-wrap items-baseline justify-between gap-2">
+    <div className="mb-5 rounded-card border border-line bg-card shadow-card">
+      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-line px-4 py-3 sm:px-5">
         <span className="font-mono text-[0.7rem] uppercase tracking-wider text-fog">
           Filtrer turer
         </span>
-        <span className="font-mono text-xs text-fog">
-          Viser {antallVist} av {antallTotalt}
+        <span className="font-mono text-xs text-muted">
+          <span className="font-semibold text-ink">{antallVist}</span> av{" "}
+          {antallTotalt}
           {harFilter && (
-            <>
-              {" · "}
-              <button
-                onClick={onNullstill}
-                className="underline underline-offset-2 hover:text-pine-deep"
-              >
-                nullstill
-              </button>
-            </>
+            <button
+              type="button"
+              onClick={onNullstill}
+              className="ml-2 underline underline-offset-2 hover:text-pine-deep"
+            >
+              nullstill
+            </button>
           )}
         </span>
       </div>
 
-      <div className="flex flex-wrap gap-2">
-        {aktiviteter.map((a) => (
-          <button
-            key={a}
-            onClick={() => onToggleAktivitet(a)}
-            className={chipClass(valgtAktivitet.has(a))}
-          >
-            {a}
-          </button>
-        ))}
-      </div>
-
-      {vanskegrader.length > 1 && (
-        <div className="mt-2.5 flex flex-wrap gap-2 border-t border-line pt-2.5">
-          {vanskegrader.map((v) => (
-            <button
-              key={v}
-              onClick={() => onToggleVanske(v)}
-              className={chipClass(valgtVanske.has(v))}
-            >
-              {v}
-            </button>
-          ))}
+      <div className="flex flex-col gap-3 px-4 py-4 sm:px-5">
+        <div>
+          <p className="mb-2 font-mono text-[0.65rem] uppercase tracking-wider text-fog">
+            Aktivitet
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {aktiviteter.map((a) => (
+              <Chip
+                key={a}
+                aktiv={valgtAktivitet.has(a)}
+                onClick={() => onToggleAktivitet(a)}
+              >
+                <span aria-hidden>{AKT_IKON[a]}</span>
+                {a}
+              </Chip>
+            ))}
+          </div>
         </div>
-      )}
+
+        {vanskegrader.length > 1 && (
+          <div>
+            <p className="mb-2 font-mono text-[0.65rem] uppercase tracking-wider text-fog">
+              Vanskegrad
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {vanskegrader.map((v) => (
+                <Chip
+                  key={v}
+                  aktiv={valgtVanske.has(v)}
+                  onClick={() => onToggleVanske(v)}
+                >
+                  {v}
+                </Chip>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
