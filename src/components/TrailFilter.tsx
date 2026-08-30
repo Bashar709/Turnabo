@@ -7,6 +7,8 @@ interface TrailFilterProps {
   vanskegrader: Vanskegrad[];
   valgtAktivitet: Set<Aktivitet>;
   valgtVanske: Set<Vanskegrad>;
+  /** Om noe filter i det hele tatt er aktivt (også smart-søk / maks lengde). */
+  aktivtFilter: boolean;
   onToggleAktivitet: (a: Aktivitet) => void;
   onToggleVanske: (v: Vanskegrad) => void;
   onNullstill: () => void;
@@ -52,13 +54,14 @@ export default function TrailFilter({
   vanskegrader,
   valgtAktivitet,
   valgtVanske,
+  aktivtFilter,
   onToggleAktivitet,
   onToggleVanske,
   onNullstill,
   antallVist,
   antallTotalt,
 }: TrailFilterProps) {
-  const harFilter = valgtAktivitet.size > 0 || valgtVanske.size > 0;
+  const harFilter = aktivtFilter;
 
   return (
     <div className="mb-5 rounded-card border border-line bg-card shadow-card">

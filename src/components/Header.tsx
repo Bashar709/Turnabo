@@ -24,21 +24,19 @@ export default function Header() {
         Turnabo
       </Link>
 
-      <nav className="flex items-center gap-1 rounded-full border border-line bg-card p-1 font-mono text-[0.7rem] uppercase tracking-wider text-fog sm:text-xs">
+      <nav className="flex items-center gap-1 rounded-full border border-line bg-card p-1 font-mono text-[0.72rem] uppercase tracking-wider text-fog sm:text-xs">
+        <Link
+          href="/"
+          className="rounded-full px-3 py-1.5 transition-colors hover:bg-pine/5 hover:text-pine-deep"
+        >
+          Finn tur
+        </Link>
         <Link
           href="/om"
           className="rounded-full px-3 py-1.5 transition-colors hover:bg-pine/5 hover:text-pine-deep"
         >
           Om oss
         </Link>
-        <a
-          href="https://github.com/Bashar709/Turnabo"
-          target="_blank"
-          rel="noreferrer"
-          className="rounded-full px-3 py-1.5 transition-colors hover:bg-pine/5 hover:text-pine-deep"
-        >
-          GitHub <span aria-hidden>↗</span>
-        </a>
       </nav>
     </header>
   );

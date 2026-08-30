@@ -16,6 +16,7 @@ import { calculateFamilyScore } from "@/lib/familyScore";
 import Header from "@/components/Header";
 import ContourBackground from "@/components/ContourBackground";
 import SearchBar from "@/components/SearchBar";
+import SmartSearch, { SmartResultat } from "@/components/SmartSearch";
 import WeatherCard from "@/components/WeatherCard";
 import FamilyScoreCard from "@/components/FamilyScoreCard";
 import MapView from "@/components/MapView";
@@ -47,8 +48,11 @@ export default function Home() {
 
   const [aktFilter, setAktFilter] = useState<Set<Aktivitet>>(new Set());
   const [vanskeFilter, setVanskeFilter] = useState<Set<Vanskegrad>>(new Set());
+  const [maksLengde, setMaksLengde] = useState<number | null>(null);
+  const [smartSvar, setSmartSvar] = useState<string | null>(null);
 
   function toggleAkt(a: Aktivitet) {
+    setSmartSvar(null);
     setAktFilter((prev) => {
       const next = new Set(prev);
       if (next.has(a)) next.delete(a);
@@ -58,6 +62,7 @@ export default function Home() {
   }
 
   function toggleVanske(v: Vanskegrad) {
+    setSmartSvar(null);
     setVanskeFilter((prev) => {
       const next = new Set(prev);
       if (next.has(v)) next.delete(v);
@@ -69,6 +74,24 @@ export default function Home() {
   function nullstillFilter() {
     setAktFilter(new Set());
     setVanskeFilter(new Set());
+    setMaksLengde(null);
+    setSmartSvar(null);
+  }
+
+  async function handleSmart(r: SmartResultat) {
+    if (r.kommune) await handleSelect(r.kommune);
+
+    const vanske = new Set<Vanskegrad>(r.vanskegrader as Vanskegrad[]);
+    if (r.familievennlig && vanske.size === 0) {
+      vanske.add("Lett");
+      vanske.add("Middels");
+    }
+    setAktFilter(new Set(r.aktiviteter as Aktivitet[]));
+    setVanskeFilter(vanske);
+    setMaksLengde(r.maksLengdeKm);
+    setSmartSvar(
+      r.svar || (r.kommune ? null : "Fant ingen kommune i søket – velg en først.")
+    );
   }
 
   async function handleSelect(navn: string) {
@@ -125,8 +148,11 @@ export default function Home() {
   const synligeTurer = alleTurer.filter(
     (t) =>
       (aktFilter.size === 0 || aktFilter.has(t.aktivitet)) &&
-      (vanskeFilter.size === 0 || vanskeFilter.has(t.vanskegrad))
+      (vanskeFilter.size === 0 || vanskeFilter.has(t.vanskegrad)) &&
+      (maksLengde == null || t.distanse <= maksLengde)
   );
+  const harNoeFilter =
+    aktFilter.size > 0 || vanskeFilter.size > 0 || maksLengde != null;
 
   return (
     <>
@@ -165,6 +191,8 @@ export default function Home() {
                 </button>
               ))}
             </div>
+
+            <SmartSearch onResult={handleSmart} />
           </div>
         </section>
       </div>
@@ -211,10 +239,21 @@ export default function Home() {
           Turer i nærheten
         </h3>
         <p className="mb-4 text-sm text-muted">
-          Ekte fjell- og toppnavn fra Kartverket. Lengde, stigning og tid er
-          foreløpig anslag &mdash; ekte turbeskrivelser hentes fra Nasjonal
-          Turbase / UT.no senere.
+          Turnavnene er ekte fjell- og toppnavn fra Kartverket. Distanse,
+          stigning og tid er automatiske estimater.
         </p>
+
+        {smartSvar && (
+          <div className="mb-4 flex items-start gap-2 rounded-card border border-fjord/25 bg-fjord/5 px-4 py-3 text-sm text-ink">
+            <span aria-hidden>✨</span>
+            <span>
+              {smartSvar}
+              {maksLengde != null && (
+                <span className="text-fog"> · maks {maksLengde} km</span>
+              )}
+            </span>
+          </div>
+        )}
 
         {alleTurer.length > 0 && (
           <TrailFilter
@@ -222,6 +261,7 @@ export default function Home() {
             vanskegrader={tilgjengeligeVanske}
             valgtAktivitet={aktFilter}
             valgtVanske={vanskeFilter}
+            aktivtFilter={harNoeFilter}
             onToggleAktivitet={toggleAkt}
             onToggleVanske={toggleVanske}
             onNullstill={nullstillFilter}

@@ -7,8 +7,6 @@ import { NextRequest, NextResponse } from "next/server";
  * nettleseren, fordi MET Norway krever en identifiserbar
  * User-Agent-header per bruksvilkårene deres:
  * https://api.met.no/doc/TermsOfService
- *
- * Bytt ut kontakt-e-posten under med din egen før produksjon.
  */
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
@@ -27,7 +25,7 @@ export async function GET(req: NextRequest) {
       `https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${lat}&lon=${lon}`,
       {
         headers: {
-          "User-Agent": "Turnabo/0.1 github.com/Bashar709/turnabo (kontakt@example.com)",
+          "User-Agent": "Turnabo (https://bashar.no)",
         },
         // Cacher i 10 minutter – MET ber om at man ikke gjør unødvendige kall.
         next: { revalidate: 600 },

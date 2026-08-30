@@ -23,7 +23,7 @@ export async function GET(req: NextRequest) {
       )}`,
       {
         headers: {
-          "User-Agent": "Turnabo/0.1 github.com/Bashar709/turnabo (kontakt@example.com)",
+          "User-Agent": "Turnabo (https://bashar.no)",
         },
       }
     );
